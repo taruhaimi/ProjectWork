@@ -1,0 +1,20 @@
+{
+    "Home": "Etusivu",
+    "About": "Tietoa Meistä",
+    "Register": "Rekisteröidy",
+    "Login": "Kirjaudu sisään",
+    "Logout": "Kirjaudu ulos",
+    "This is the front page": "Tämä on etusivu",
+    "All Code Snippets": "Kaikki koodit",
+    "Username": "Käyttäjänimi",
+    "Post your own code": "Lähetä oma koodisi",
+    "Enter your code here": "Kirjoita koodisi tähän",
+    "Enter your own comment here": "Kirjoita kommenttisi tähän",
+    "Submit": "Lähetä",
+    "Email": "Sähköposti",
+    "Password": "Salasana",
+    "Show comments": "Näytä kommentit",
+    "Logging out": "Kirjaudutaan ulos",
+    "Tutorials": "Ohjeet",
+    "This is page does not exist": "Tätä sivua ei ole olemassa"
+}
