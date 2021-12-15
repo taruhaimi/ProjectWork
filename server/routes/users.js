@@ -12,7 +12,7 @@ const jwt = require("jsonwebtoken");
 
 
 
-/* GET all the users. */
+/* GET all the users from the database */
 router.get('/', function(req, res, next) {
   //Users.collection.drop();
 
@@ -20,10 +20,6 @@ router.get('/', function(req, res, next) {
     if(err) return next(err);
     res.send(users)
   })
-});
-
-router.get('/register', function(req, res, next) {
-  res.send('register');
 });
 
 /* POST new user to the database */
@@ -75,11 +71,7 @@ router.post('/register',
     });
 });
 
-router.get('/login', function(req, res, next) {
-  res.send('login');
-});
-
-/* POST makes user authorised to have extra features at the web application*/
+/* POST makes user authorised to have extra features at the web application */
 router.post('/login',
   upload.none(),
   (req, res, next) => {

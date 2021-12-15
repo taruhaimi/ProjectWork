@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import React, {Suspense} from 'react';
 
+/* This is a page to be shown if user tries to go to page that doesn't exist*/
 
 function NotFound() {
     const { t } = useTranslation();

@@ -8,13 +8,15 @@ import React, {Suspense} from 'react';
 
 /* This is a navigation menu in the top of every page */
 
-function Header({jwt}) {
+function Header() {
 
-    /* To change language in the web page*/
+    /* To change language in the web application */
     const { t, i18n } = useTranslation();
     const changeLanguage = (lang) => {
         i18n.changeLanguage(lang)
     }
+    const token = localStorage.getItem("auth_token");
+
 
     return (
     <Box sx={{ flexGrow: 1 }}>
@@ -22,9 +24,8 @@ function Header({jwt}) {
             <Toolbar>
             <div>
                 <Button color="inherit" component={RouterLink} to="/">{t("Home")}</Button>
-                <Button color="inherit" component={RouterLink} to="/register">{t("Register")}</Button>
-                <Button color="inherit" component={RouterLink} to="/login">{t("Login")}</Button>
-                <Button color="inherit" component={RouterLink} to="/logout">{t("Logout")}</Button>
+                <>{token ? <Button color="inherit" component={RouterLink} to="/logout">{t("Logout")}</Button>: <><Button color="inherit" component={RouterLink} to="/register">{t("Register")}</Button><Button color="inherit" component={RouterLink} to="/login">{t("Login")}</Button></>} </>
+                <>{token ? <Button color="inherit" component={RouterLink} to="/myposts">{t("My posts")}</Button>: ""} </>
                 <Button color="inherit" component={RouterLink} to="/tutorials">{t("Tutorials")}</Button>
                 <Button id = "fi" color="inherit" onClick={()=> changeLanguage("fi")}>FI</Button>
                 <Button id = "en" color="inherit" onClick={()=> changeLanguage("en")}>EN</Button>

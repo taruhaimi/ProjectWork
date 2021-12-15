@@ -1,5 +1,6 @@
 import {useState, useEffect} from 'react'
 
+/* This file is called when showing code snippets and comments at the homepage to show also who has posted them. */
 
 function FetchUsername({id}) {
     const [users, setUsers] = useState([]);

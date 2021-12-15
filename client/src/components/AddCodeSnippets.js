@@ -4,11 +4,12 @@ import React, {Suspense} from 'react';
 
 /* This file adds new code snippet */
 
-function AddCodeSnippets({jwt}) {
+function AddCodeSnippets() {
     const [codeData, setCodeData] = useState("");
+    const token = localStorage.getItem("auth_token");
     const { t } = useTranslation();
 
-    /* Connection to server and database */
+    /* Connection to server and database to save a new code snippet */
     const submitCode = (e) => {
         e.preventDefault()
         fetch("/codes", {
@@ -16,7 +17,7 @@ function AddCodeSnippets({jwt}) {
             headers: {
                 "Accept": "application/json",
                 "Content-type": "application/json",
-                "authorization": "Bearer " + jwt.jwt.jwt
+                "authorization": "Bearer " + token
             },
             body: JSON.stringify(codeData),
             mode: "cors"
@@ -38,10 +39,10 @@ function AddCodeSnippets({jwt}) {
     )
 }
 
-export default function App(jwt) {
+export default function App() {
     return (
         <Suspense fallback="loading">
-            <AddCodeSnippets jwt={jwt}/>
+            <AddCodeSnippets/>
         </Suspense>
     )
 }

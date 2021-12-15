@@ -4,7 +4,7 @@ const Comments = require("../models/Comments");
 const validateToken = require("../auth/validateToken.js");
 
 
-/* GET all the comments. */
+/* GET all the comments from the database */
 router.get('/', function(req, res, next) {
    // Comments.collection.drop();
 
@@ -18,7 +18,7 @@ router.get('/', function(req, res, next) {
     })
 });
 
-/* POST new comment to the database. */
+/* POST a new comment to the database */
 router.post('/', validateToken, function(req, res, next) {
     console.log(req.body);
     console.log("lisätään kommentti");
@@ -38,6 +38,7 @@ router.post('/', validateToken, function(req, res, next) {
     
 });
 
+/* POST add one like for a specific comment and ensure that user has not voted yet (either like or dislike) */
 router.post('/addLike', validateToken, function(req, res, next) {
     Comments.findOne({_id: req.body.id}, (err,comment) => {
         if(err) throw err;
@@ -52,6 +53,7 @@ router.post('/addLike', validateToken, function(req, res, next) {
     })
 });
 
+/* POST add one dislikelike for a specific comment and ensure that user has not voted yet (either like or dislike) */
 router.post('/disLike', validateToken, function(req, res, next) {
     Comments.findOne({_id: req.body.id}, (err,comment) => {
         if(err) throw err;
@@ -66,5 +68,16 @@ router.post('/disLike', validateToken, function(req, res, next) {
     })
 });
 
+/* POST edit a specific comment */
+router.post('/editComment', validateToken, function(req,res,next) {
+    Comments.findOne({_id: req.body.id}, (err,comment) => {
+        if(err) throw err;
+        if(comment) {
+            comment.comment=req.body.comment;
+            comment.save();
+            console.log("Comment edited: "+req.body.comment);
+        }
+    })
+})
 
 module.exports = router;

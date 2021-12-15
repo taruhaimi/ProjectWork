@@ -14,7 +14,7 @@ function Register() {
 
         e.preventDefault()
 
-        /* When user submits their info, we add new user to the database. */
+        /* When user submits their info, this call post method to add new user to the database. */
         fetch("/users/register", {
             method: "POST",
             headers: {
@@ -23,7 +23,6 @@ function Register() {
             body: JSON.stringify(userData),
             mode: "cors"
         })
-        window.location.href = "/login";
 
     }
     const handleChange = (e) => {

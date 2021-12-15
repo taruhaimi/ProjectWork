@@ -1,19 +1,21 @@
 import {useState} from 'react'
 import { useTranslation } from 'react-i18next';
 import React, {Suspense} from 'react';
+import {Navigate} from 'react-router-dom'
+
  
 /* This is the login page for user to authorize to the page. */
 
-function Login({setJwt, jwt, setUser}) {
+function Login({setUser, setToken}) {
     const [userData, setUserData] = useState({})
     const { t } = useTranslation();
 
     const login = (e) => {
         e.preventDefault()
 
-        /* When user tries to log in, we try to find it from the database. 
-        If the user is found, the token is returned from the server. 
-        With that token we check at all the "subpages" if the user is logged in or not. */
+        /* When user tries to log in, this fetch tries to find them from the database. 
+        If the user is found, the token is returned from the server and stored to the local storage. 
+        With that token we check in the "subpages" if the user is authorized or not. */
         
         fetch("/users/login", {
             method: "POST",
@@ -27,10 +29,12 @@ function Login({setJwt, jwt, setUser}) {
             .then(data => {
                 console.log(data)
                 if(data.token) {
-                    setJwt(data.token)
                     setUser(JSON.parse(Buffer.from(data.token.split(".")[1], "base64").toString()))
-                   // localStorage.setItem("auth_token", data.token);
+                    localStorage.setItem("auth_token", data.token);
+                    setToken(data.token)
                     //window.location.href = "/";
+                    //history.push("/");
+                    //return <Navigate to="/" />
                 }
             })
 
@@ -54,10 +58,10 @@ function Login({setJwt, jwt, setUser}) {
 
 }
 
-export default function App({setJwt, jwt, setUser}) {
+export default function App({setUser, setToken}) {
     return (
         <Suspense fallback="loading">
-            <Login setJwt={setJwt} jwt={jwt} setUser={setUser} />
+            <Login setUser={setUser} setToken={setToken} />
         </Suspense>
     )
 }

@@ -4,7 +4,7 @@ const Codes = require("../models/Codes");
 const validateToken = require("../auth/validateToken.js");
 
 
-/* GET all the codes. */
+/* GET all the codes from databse */
 router.get('/', function(req, res, next) {
     //  Codes.collection.drop();
 
@@ -32,20 +32,6 @@ router.post('/', validateToken, function(req, res, next) {
         },
     (err,ok) => {
         if(err) throw err;
-        /*
-        Users.findOne({_id: req.user.id}, (err,user) => {
-            console.log(req.user.id);
-            if(err) throw err;
-            if(!user) {
-                console.log("user not found");
-                res.json("User not found");
-            } else {
-                user.codes.push(req.body.code);
-                user.save();
-                console.log("koodi lisätty käyttäjälle");
-                console.log(user);
-            }
-        })*/
         res.json({success: true});
 
     });
@@ -53,6 +39,7 @@ router.post('/', validateToken, function(req, res, next) {
     
 });
 
+/* POST add one like for a specific code and ensure that user has not voted yet (either like or dislike) */
 router.post('/addLike', validateToken, function(req, res, next) {
     Codes.findOne({_id: req.body.id}, (err,code) => {
         if(err) throw err;
@@ -67,6 +54,7 @@ router.post('/addLike', validateToken, function(req, res, next) {
     })
 });
 
+/* POST add one dislike for a specific code and ensure that user has not voted yet (either like or dislike) */
 router.post('/disLike', validateToken, function(req, res, next) {
     Codes.findOne({_id: req.body.id}, (err,code) => {
         if(err) throw err;
@@ -81,5 +69,16 @@ router.post('/disLike', validateToken, function(req, res, next) {
     })
 });
 
+/* POST edit a specific code */
+router.post('/editCode', validateToken, function(req,res,next) {
+    Codes.findOne({_id: req.body.id}, (err,code) => {
+        if(err) throw err;
+        if(code) {
+            code.code=req.body.code;
+            code.save();
+            console.log("Code edited: "+req.body.code);
+        }
+    })
+})
 
 module.exports = router;

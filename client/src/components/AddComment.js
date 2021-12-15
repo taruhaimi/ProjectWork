@@ -2,23 +2,23 @@ import {useState} from 'react'
 import { useTranslation } from 'react-i18next';
 import React, {Suspense} from 'react';
 
-/* This file adds a new comment to the code snippet */
+/* This file adds a new comment to one code snippet */
 
-function AddComment({code, jwt}) {
+function AddComment({code}) {
     const { t } = useTranslation();
+    const token = localStorage.getItem("auth_token");
 
     const [comment, setComment] = useState([]);
 
-    /* Connection to server and database*/
+    /* Connection to server and database to save a new comment */
     const addComment = (e) => {
-        
         e.preventDefault()
         fetch("/comments", {
             method: "POST",
             headers: {
                 "Accept": "application/json",
                 "Content-type": "application/json",
-                "authorization": "Bearer " + jwt.jwt
+                "authorization": "Bearer " + token
             },
             body: JSON.stringify({
                 comment: comment.comment,
@@ -43,10 +43,10 @@ function AddComment({code, jwt}) {
     )
 }
 
-export default function App({code, jwt}) {
+export default function App({code}) {
     return (
         <Suspense fallback="loading">
-            <AddComment code={code} jwt={jwt}/>
+            <AddComment code={code}/>
         </Suspense>
     )
 }

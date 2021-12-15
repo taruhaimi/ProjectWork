@@ -5,10 +5,12 @@ import { useTranslation } from 'react-i18next';
 import React, {Suspense} from 'react';
 import FetchUsername from './FetchUsername';
 
+
 /* This file fetches the posted code snippets from the database and shows them at home page.*/ 
 
-function ShowCodeSnippets({jwt}) {
+function ShowCodeSnippets() {
     const { t } = useTranslation();
+    const token = localStorage.getItem("auth_token"); //fetch token from local storage to identify user
     const [code, setCode] = useState([])
 
     /* Find posted codes from the database. */
@@ -28,12 +30,13 @@ function ShowCodeSnippets({jwt}) {
                     headers: {
                         "Accept": "application/json",
                         "Content-type": "application/json",
-                        "authorization": "Bearer " + jwt.jwt
+                        "authorization": "Bearer " + token
                     },
                     body: JSON.stringify({"id": id}),
                     mode: "cors"
                 })
-                // This return updates the like amount on the webpage but doesn't effect on the real like count
+                // These returns and setCode updates the like amount on the webpage but doesn't effect on the real like count
+                // Also user can click vote button multiple times but only one click is really counted
                 return {...item, like: item.like+1};
             }
             return item;
@@ -41,6 +44,7 @@ function ShowCodeSnippets({jwt}) {
         setCode(updatedItems);
     };
 
+    // Works like addLike()
     const disLike = (id) => {
         let updatedItems = code.map((item) => {
             if(item._id === id) {
@@ -51,7 +55,7 @@ function ShowCodeSnippets({jwt}) {
                     headers: {
                         "Accept": "application/json",
                         "Content-type": "application/json",
-                        "authorization": "Bearer " + jwt.jwt
+                        "authorization": "Bearer " + token
                     },
                     body: JSON.stringify({"id": id}),
                     mode: "cors"
@@ -76,17 +80,17 @@ function ShowCodeSnippets({jwt}) {
         setCode(clickedCodes);
     }
 
-    /* Every codesnippet has its own array about who has written it, comments, likes and dislikes. Everyone can see them.
-    Comments are shown or hidden by clicking a button.
+    /* Every codesnippet has its own array about who has written it, its comments, likes and dislikes. Everyone can see them.
+    Comments are shown or hidden by clicking a button (showComments()).
     If user is logged in, they can also post new comments (<AddComment> is called) or vote once*/
     const codeList = code.map((item) => {
         return (
             <> 
-                <p> <FetchUsername id={item.user}/>: {item.code} </p>
+                <p> <FetchUsername id={item.user}/>: <i>{item.code}</i> </p>
                 <button id="likeBtn" onClick={() => {addLike(item._id)}}>❤️ {item.like} </button> <button id="dislikeBtn" onClick={() => {disLike(item._id)}}>💔 {item.dislike}</button> 
                 <button onClick={() => showComments(item._id)}>{t("Show comments")}</button>
-                <p> {jwt.jwt ? <AddComment code={item} jwt={jwt}/>: ""} </p> 
-                {item.code_clicked ? <ShowComments id={item._id} jwt={jwt}/> : ""}
+                <p> {token ? <AddComment code={item} />: ""} </p> 
+                {item.code_clicked ? <ShowComments id={item._id} /> : ""}
                 <p> *** </p>
             </>
         )
@@ -100,10 +104,10 @@ function ShowCodeSnippets({jwt}) {
     )
 }
 
-export default function App({jwt}) {
+export default function App() {
     return (
         <Suspense fallback="loading">
-            <ShowCodeSnippets jwt={jwt}/>
+            <ShowCodeSnippets />
         </Suspense>
     )
 }

@@ -7,27 +7,29 @@ import Register from './components/Register'
 import Login from './components/Login'
 import Logout from './components/Logout'
 import Tutorials from './components/Tutorials'
+import MyPosts from './components/MyPosts';
 import {useState} from 'react';
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 
 
 function App() {
-  const [jwt, setJwt] = useState("");
-  const [user, setUser] = useState({})
+  const [user, setUser] = useState({});
+  const [token, setToken] = useState({});
 
 
   
   return (
     <Router> 
       <div className="App">
-        <Header jwt={jwt} />
+        <Header />
         <Routes>
           <Route path='*' element={<NotFound />} />
-          <Route path="/" element={<> <h2>{jwt ? `Welcome ${user.email}!` : ""} </h2> <Home jwt={jwt}/> </>} />
+          <Route path="/" element={<> <h2>{token==null ? "" : `Welcome ${user.email} and ${user.id}!`} </h2> <Home /> </>} />
           <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login setJwt={setJwt} setUser={setUser} jwt={jwt}/>} />
-          <Route path="/logout" element={<Logout jwt={jwt}/>} />
+          <Route path="/login" element={<Login setUser={setUser} setToken={setToken}/>} />
+          <Route path="/logout" element={<Logout setToken={setToken}/>} />
           <Route path="/tutorials" element={<Tutorials />} />
+          <Route path="/myposts" element={<MyPosts id={user.id} />} />
         </Routes>
         <Footer />
       </div>
