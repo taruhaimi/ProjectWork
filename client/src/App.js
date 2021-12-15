@@ -24,7 +24,7 @@ function App() {
         <Header />
         <Routes>
           <Route path='*' element={<NotFound />} />
-          <Route path="/" element={<> <h2>{token==null ? "" : `Welcome ${user.email} and ${user.id}!`} </h2> <Home /> </>} />
+          <Route path="/" element={<Home />}/>
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login setUser={setUser} setToken={setToken}/>} />
           <Route path="/logout" element={<Logout setToken={setToken}/>} />

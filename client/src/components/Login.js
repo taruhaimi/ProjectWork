@@ -1,8 +1,6 @@
 import {useState} from 'react'
 import { useTranslation } from 'react-i18next';
 import React, {Suspense} from 'react';
-import {Navigate} from 'react-router-dom'
-
  
 /* This is the login page for user to authorize to the page. */
 
@@ -32,9 +30,6 @@ function Login({setUser, setToken}) {
                     setUser(JSON.parse(Buffer.from(data.token.split(".")[1], "base64").toString()))
                     localStorage.setItem("auth_token", data.token);
                     setToken(data.token)
-                    //window.location.href = "/";
-                    //history.push("/");
-                    //return <Navigate to="/" />
                 }
             })
 

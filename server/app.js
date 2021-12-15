@@ -24,14 +24,19 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+//app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
-app.use('/codes', codesRouter);
-app.use('/comments', commentsRouter);
+ //app.use('/', indexRouter);
+ app.use('/users', usersRouter);
+ app.use('/codes', codesRouter);
+ app.use('/comments', commentsRouter);
 
-if (process.env.NODE_ENV === "development") {
+if (process.env.NODE_ENV === "production") {
+    app.use(express.static(path.resolve("..", "client", "build")));
+    app.get("/*", (req, res) =>
+        res.sendFile(path.resolve("..", "client", "build", "index.html"))
+    );
+} else if (process.env.NODE_ENV === "development") {
     var corsOptions = {
         origin: "http://localhost:3000",
         optionsSuccessStatus: 200,
