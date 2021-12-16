@@ -62,7 +62,7 @@ router.post('/register',
             },
             (err,ok) => {
               if(err) throw err;
-              return res.redirect("/users/login");
+              return res.json({success: true});
             }
             );
           });
@@ -91,7 +91,7 @@ router.post('/login',
               jwtPayload,
               process.env.SECRET,
               {
-                expiresIn: 120
+                expiresIn: 600
               },
               (err, token) => {
                 res.json({success: true, token}); // returns token for authorization

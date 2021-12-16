@@ -5,9 +5,9 @@ import React, {Suspense} from 'react';
 /* This page shows to the authorized user all their posted code snippets and comments and gives them a chance to edit them. */
 
 function MyPosts({id}) {
+    const token = localStorage.getItem("auth_token");
     const [codes, setCodes] = useState([]);
     const [comments, setComments] = useState([]);
-    const token = localStorage.getItem("auth_token");
     const { t } = useTranslation();
 
     /* Find all user's posted codes from the database. */
@@ -16,7 +16,7 @@ function MyPosts({id}) {
         .then(response => response.json())
         .then(json => setCodes(json))
     }, [])
-
+    console.log(codes);
     // This makes a post method to the server to change the old code snippet to new one
     const editCode = (e,id) => {
         e.preventDefault();
@@ -43,6 +43,8 @@ function MyPosts({id}) {
     
     // This shows the codes and textareas+buttons to edit them on the webpage  
     const ownPosts = codes.map((code) => {
+        console.log(id)
+        console.log(code.user)
         if(code.user===id) {
             return (
                 <>
@@ -97,7 +99,7 @@ function MyPosts({id}) {
                     <p><i>{comment.comment}</i></p>
                     {t("Edit your comment")}:
                 <form onSubmit = {(e) => editComment(e,comment._id)}>
-                        <textarea id="comment" rows="5" cols="35" placeholder={t("Write your edits")}></textarea><br></br>
+                        <textarea id="comment" rows="5" cols="35" placeholder={t("Write your edits here")}></textarea><br></br>
                         <input type="submit" id="submit" value={t("Submit")} />
                 </form>
                 <p> *** </p>

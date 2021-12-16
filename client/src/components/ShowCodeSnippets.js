@@ -12,6 +12,7 @@ function ShowCodeSnippets() {
     const { t } = useTranslation();
     const token = localStorage.getItem("auth_token"); //fetch token from local storage to identify user
     const [code, setCode] = useState([])
+    const [like, setLike] = useState(0);
 
     /* Find posted codes from the database. */
     useEffect(() => {
@@ -35,9 +36,9 @@ function ShowCodeSnippets() {
                     body: JSON.stringify({"id": id}),
                     mode: "cors"
                 })
+                    return {...item, like: item.like+1};
                 // These returns and setCode updates the like amount on the webpage but doesn't effect on the real like count
                 // Also user can click vote button multiple times but only one click is really counted
-                return {...item, like: item.like+1};
             }
             return item;
         });
@@ -60,6 +61,7 @@ function ShowCodeSnippets() {
                     body: JSON.stringify({"id": id}),
                     mode: "cors"
                 })
+
 
                 return {...item, dislike: item.dislike+1};
             }

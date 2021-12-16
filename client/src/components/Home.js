@@ -12,7 +12,6 @@ function Home() {
 
     return (
         <div> 
-            <h1> {t("This is the front page")} </h1>
             <p> {token ? <AddCodeSnippets /> : ""} </p>
             <ShowCodeSnippets />
         </div>
