@@ -13,8 +13,20 @@ import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 
 
 function App() {
-  const [user, setUser] = useState({});
-  const [token, setToken] = useState({});
+
+  const [token, setToken] = useState(() => {
+    const tokenString = localStorage.getItem("auth_token");
+    return tokenString? tokenString : {}
+  });
+  const [user, setUser] = useState(() => {
+    console.log(token);
+    if(Object.keys(token).length === 0) {
+      return {}
+    } else {
+      const userString = JSON.parse(Buffer.from(token.split(".")[1], "base64").toString())
+      return userString? userString : {}
+    }
+  });
 
 
   

@@ -30,6 +30,7 @@ function Login({setUser, setToken}) {
                     setUser(JSON.parse(Buffer.from(data.token.split(".")[1], "base64").toString()))
                     localStorage.setItem("auth_token", data.token);
                     setToken(data.token)
+                    window.location.href = "/";
                 }
             })
 

@@ -12,7 +12,6 @@ function ShowCodeSnippets() {
     const { t } = useTranslation();
     const token = localStorage.getItem("auth_token"); //fetch token from local storage to identify user
     const [code, setCode] = useState([])
-    const [like, setLike] = useState(0);
 
     /* Find posted codes from the database. */
     useEffect(() => {

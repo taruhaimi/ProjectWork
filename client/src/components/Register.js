@@ -22,8 +22,11 @@ function Register() {
             },
             body: JSON.stringify(userData),
             mode: "cors"
+        }).then((response) => {
+            if (response.ok) {
+                window.location.href = "/login";
+            }
         })
-        window.location.href = "/login";
 
     }
     const handleChange = (e) => {
