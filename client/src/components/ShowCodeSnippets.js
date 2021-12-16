@@ -20,53 +20,65 @@ function ShowCodeSnippets() {
         .then(json => setCode(json))
     }, [])
 
-    /* If user is logged in, they can add one like or dislike to the post */
-    const addLike = (id) => {
-        let updatedItems = code.map((item) => {
-            if(item._id === id) {
-                // Make a post to the server side that updates the like count in the database
-                fetch('/codes/addLike', {
-                    method: "POST",
-                    headers: {
-                        "Accept": "application/json",
-                        "Content-type": "application/json",
-                        "authorization": "Bearer " + token
-                    },
-                    body: JSON.stringify({"id": id}),
-                    mode: "cors"
-                })
-                    return {...item, like: item.like+1};
-                // These returns and setCode updates the like amount on the webpage but doesn't effect on the real like count
-                // Also user can click vote button multiple times but only one click is really counted
-            }
-            return item;
-        });
-        setCode(updatedItems);
+
+    // This makes sure that the possible previous button click is carried out fully (= previous fetch and post are finished)
+    // so user can't click like or dislike -buttons multiple times
+    const [sending, setSending] = useState(false); 
+
+    // If user is logged in, they can add one like or dislike to the post 
+    const addLike = async (id) => {
+        let codesCopy = [...code];
+        let item = codesCopy.find((code) => code._id === id);
+        if (!sending) {
+            setSending(true);
+            // Make a post to the server side that updates the like count in the database
+            let response = await fetch("/codes/addLike", {
+                method: "POST",
+                headers: {
+                    "Accept": "application/json",
+                    "Content-type": "application/json",
+                    "authorization": "Bearer " + token
+                },
+                body: JSON.stringify({"id": id}),
+                mode: "cors"
+            }).then((response) => {
+                if (response.status==200) {
+                    // Updates the like count on the web page
+                    item.like += 1;
+                    setCode(codesCopy);
+                }
+            })
+        }
+        setSending(false);
+
     };
 
     // Works like addLike()
-    const disLike = (id) => {
-        let updatedItems = code.map((item) => {
-            if(item._id === id) {
-                
+    const disLike = async (id) => {
+        let codesCopy = [...code];
+        let item = codesCopy.find((code) => code._id === id);
+        if (!sending) {
+            setSending(true);
+            // Make a post to the server side that updates the like count in the database
+            let response = await fetch("/codes/disLike", {
+                method: "POST",
+                headers: {
+                    "Accept": "application/json",
+                    "Content-type": "application/json",
+                    "authorization": "Bearer " + token
+                },
+                body: JSON.stringify({"id": id}),
+                mode: "cors"
+            }).then((response) => {
+                if (response.status==200) {
+                    // Updates the like count on the web page
+                    item.dislike += 1;
+                    setCode(codesCopy);
+                }
+            })
+        }
+        setSending(false);
 
-                fetch('/codes/disLike', {
-                    method: "POST",
-                    headers: {
-                        "Accept": "application/json",
-                        "Content-type": "application/json",
-                        "authorization": "Bearer " + token
-                    },
-                    body: JSON.stringify({"id": id}),
-                    mode: "cors"
-                })
-
-
-                return {...item, dislike: item.dislike+1};
-            }
-            return item;
-        });
-        setCode(updatedItems);
     };
 
     /* Function for changing if the comments are shown or not at frontpage. 

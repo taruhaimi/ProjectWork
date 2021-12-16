@@ -11,7 +11,7 @@ router.get('/', function(req, res, next) {
     Comments.find({}, (err,comments) => {
         if(err) return next(err);
         if(!comments) {
-            return res.send("ei kommentteja");
+            return res.send("No comments");
         } else {
             return res.json(comments);
         }
@@ -21,7 +21,6 @@ router.get('/', function(req, res, next) {
 /* POST a new comment to the database */
 router.post('/', validateToken, function(req, res, next) {
     console.log(req.body);
-    console.log("lisätään kommentti");
     const newComment = Comments.create({
         comment: req.body.comment,
         user: req.user.id,
@@ -32,10 +31,8 @@ router.post('/', validateToken, function(req, res, next) {
     (err,ok) => {
         if(err) throw err;
         res.json(newComment);
-
+        console.log("Comment added");
     });
-        
-    
 });
 
 /* POST add one like for a specific comment and ensure that user has not voted yet (either like or dislike) */
@@ -48,7 +45,12 @@ router.post('/addLike', validateToken, function(req, res, next) {
                 comment.like=comment.like+1;
                 comment.save();
                 console.log("1 like added")
+                res.status(200).json({success: true});
+            } else {
+                res.status(400).json({error: "You have already voted"});
             }
+        } else {
+            res.status(400).json({error: "Can't vote"});
         }
     })
 });
@@ -63,7 +65,12 @@ router.post('/disLike', validateToken, function(req, res, next) {
                 comment.dislike=comment.dislike+1;
                 comment.save();
                 console.log("1 dislike added")
+                res.status(200).json({success: true});
+            } else {
+                res.status(400).json({error: "You have already voted"});
             }
+        } else {
+            res.status(400).json({error: "Can't vote"});
         }
     })
 });
@@ -76,6 +83,9 @@ router.post('/editComment', validateToken, function(req,res,next) {
             comment.comment=req.body.comment;
             comment.save();
             console.log("Comment edited: "+req.body.comment);
+            res.json({success: true});
+        } else {
+            res.json({success: false});
         }
     })
 })

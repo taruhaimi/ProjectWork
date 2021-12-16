@@ -22,20 +22,20 @@ function Tutorials() {
                 <li> {t("post their own code snippets")} </li>
                 <li> {t("comment on other users' code snippets")} </li>
                 <li> {t("vote code snippets and comments (like or dislike once)")} </li>
-                <li> {t("edit your own code snippets and comments")} </li>
+                <li> {t("edit their own code snippets and comments")} </li>
             </ul>
             <h4> {t("Notes for registering and logging in")}! </h4>
             <ul>
-                <li> {t("If there happens some errors when registering or logging in (e.g. your email already exists, password is not strong enough or wrong credentials are written, these error messages are shown in the console but not in the webpage")}!</li>
+                <li> {t("If there happens some errors when registering or logging in (e.g. your email already exists, password is not strong enough or wrong credentials are written, these errors are shown in the console but not in the webpage")}!</li>
                 <li> {t("You know that your registering/logging in has been succesful, when")}: </li>
                 <ul>
-                    <li> {t("After registering you are redirected to the login-page")}</li>
-                    <li> {t("After logging in the navigation bar shows options 'logout' and 'my posts' instead 'register' and 'login'")}</li>
+                    <li> {t("after registering you are redirected to the login page")}</li>
+                    <li> {t("after logging in you are redirected to the home page")}</li>
                 </ul>
             </ul>
-            <h4> {t("Note about new code snippets, comments and votes")}!</h4>
+            <h4> {t("Note about new code snippets and comments")}!</h4>
             <ul>
-                <li> {t("Changes are visible on the web pages when the page is refreshed")}</li>
+                <li> {t("Changes are visible on the web page when the page is refreshed")}.</li>
             </ul>
             <h4> {t("Thank you for using this web page")}! :) </h4>
         

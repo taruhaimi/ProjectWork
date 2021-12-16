@@ -25,7 +25,6 @@ function Login({setUser, setToken}) {
         })
             .then(response => response.json())
             .then(data => {
-                console.log(data)
                 if(data.token) {
                     setUser(JSON.parse(Buffer.from(data.token.split(".")[1], "base64").toString()))
                     localStorage.setItem("auth_token", data.token);

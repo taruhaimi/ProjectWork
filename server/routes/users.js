@@ -9,9 +9,6 @@ const bcrypt = require("bcryptjs");
 const {body, validationResult} = require('express-validator');
 const jwt = require("jsonwebtoken");
 
-
-
-
 /* GET all the users from the database */
 router.get('/', function(req, res, next) {
   //Users.collection.drop();
@@ -50,7 +47,7 @@ router.post('/register',
         console.log(errtext);
         return res.status(403).json(errtext);
       } else {
-        console.log("rekisteröidytään");
+        console.log("Registering");
         // password is encrypted
         bcrypt.genSalt(10, (err, salt) => {
           bcrypt.hash(req.body.password, salt, (err, hash) => {

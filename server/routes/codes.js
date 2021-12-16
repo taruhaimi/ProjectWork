@@ -11,7 +11,7 @@ router.get('/', function(req, res, next) {
     Codes.find({}, (err,code) => {
         if(err) return next(err);
         if(!code) {
-            return res.send("ei koodeja");
+            return res.send("No codes");
         } else {
             return res.json(code);
         }
@@ -21,7 +21,6 @@ router.get('/', function(req, res, next) {
 /* POST new code snippet to the database */
 router.post('/', validateToken, function(req, res, next) {
     console.log(req.body);
-    console.log("lisätään koodi");
     Codes.create({
         code: req.body.code,
         user: req.user.id,
@@ -33,7 +32,7 @@ router.post('/', validateToken, function(req, res, next) {
     (err,ok) => {
         if(err) throw err;
         res.json({success: true});
-
+        console.log("New code added");
     });
         
     
@@ -49,7 +48,12 @@ router.post('/addLike', validateToken, function(req, res, next) {
                 code.like=code.like+1;
                 code.save();
                 console.log("1 like added")
+                res.status(200).json({success: true});
+            } else {
+                res.status(400).json({error: "You have already voted"});
             }
+        } else {
+            res.status(400).json({error: "Can't vote"});
         }
     })
 });
@@ -64,7 +68,12 @@ router.post('/disLike', validateToken, function(req, res, next) {
                 code.dislike=code.dislike+1;
                 code.save();
                 console.log("1 dislike added")
+                res.status(200).json({success: true});
+            } else {
+                res.status(400).json({error: "You have already voted"});
             }
+        } else {
+            res.status(400).json({error: "Can't vote"});
         }
     })
 });
@@ -77,6 +86,10 @@ router.post('/editCode', validateToken, function(req,res,next) {
             code.code=req.body.code;
             code.save();
             console.log("Code edited: "+req.body.code);
+            res.json({success: true});
+        } else {
+            res.json({success: false});
+
         }
     })
 })

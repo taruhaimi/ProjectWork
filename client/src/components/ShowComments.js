@@ -17,54 +17,62 @@ function ShowComments({id}) {
     }, [])
 
 
+    // This makes sure that the possible previous button click is carried out fully (= previous fetch and post are finished)
+    // so user can't click like or dislike -buttons multiple times
+    const [sending, setSending] = useState(false); 
 
-    /* If user is logged in, they can add one like or dislike to the comment */
-    const addLike = (id) => {
-        let updatedItems = comment.map((item) => {
-            if(item._id === id) {
-                // Make a post to the server side that updates the like count in the database
-                fetch('/comments/addLike', {
-                    method: "POST",
-                    headers: {
-                        "Accept": "application/json",
-                        "Content-type": "application/json",
-                        "authorization": "Bearer " + token
-                    },
-                    body: JSON.stringify({"id": id}),
-                    mode: "cors"
-                })
-                /* These returns and setcomment() update the like count on the webpage (=user can click like button multiple times and the like count increases on the page) 
-                but it doesn't effect on the real like count */
-                return {...item, like: item.like+1};
-            }
-            return item;
-        });
-        setComment(updatedItems);
+    // If user is logged in, they can add one like or dislike to the comment 
+    const addLike = async (id) => {
+        let commentsCopy = [...comment];
+        let item = commentsCopy.find((comment) => comment._id === id);
+        if (!sending) {
+            setSending(true);
+            // Make a post to the server side that updates the like count in the database
+            let response = await fetch("/comments/addLike", {
+                method: "POST",
+                headers: {
+                    "Accept": "application/json",
+                    "Content-type": "application/json",
+                    "authorization": "Bearer " + token
+                },
+                body: JSON.stringify({"id": id}),
+                mode: "cors"
+            }).then((response) => {
+                if (response.status==200) {
+                    // Updates the like count on the web page
+                    item.like += 1;
+                    setComment(commentsCopy);
+                }
+            })
+        }
+        setSending(false);
+    };
+
+    // Works like addLike()
+    const disLike = async (id) => {
+        let commentsCopy = [...comment];
+        let item = commentsCopy.find((comment) => comment._id === id);
+        if (!sending) {
+            setSending(true);
+            let response = await fetch("/comments/disLike", {
+                method: "POST",
+                headers: {
+                    "Accept": "application/json",
+                    "Content-type": "application/json",
+                    "authorization": "Bearer " + token
+                },
+                body: JSON.stringify({"id": id}),
+                mode: "cors"
+            }).then((response) => {
+                if (response.status==200) {
+                    item.dislike += 1;
+                    setComment(commentsCopy);
+                }
+            })
+        }
+        setSending(false);
     };
     
-    // Works like addLike()
-    const disLike = (id) => {
-        let updatedItems = comment.map((item) => {
-            if(item._id === id) {
-                
-
-                fetch('/comments/disLike', {
-                    method: "POST",
-                    headers: {
-                        "Accept": "application/json",
-                        "Content-type": "application/json",
-                        "authorization": "Bearer " + token
-                    },
-                    body: JSON.stringify({"id": id}),
-                    mode: "cors"
-                })
-
-                return {...item, dislike: item.dislike+1};
-            }
-            return item;
-        });
-        setComment(updatedItems);
-    };
 
     /* Returns comments and the users who has written them one by one for one post at time. */
     const commentList = comment.map((item) => {

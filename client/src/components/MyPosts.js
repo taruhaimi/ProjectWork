@@ -16,7 +16,6 @@ function MyPosts({id}) {
         .then(response => response.json())
         .then(json => setCodes(json))
     }, [])
-    console.log(codes);
     // This makes a post method to the server to change the old code snippet to new one
     const editCode = (e,id) => {
         e.preventDefault();
@@ -43,8 +42,6 @@ function MyPosts({id}) {
     
     // This shows the codes and textareas+buttons to edit them on the webpage  
     const ownPosts = codes.map((code) => {
-        console.log(id)
-        console.log(code.user)
         if(code.user===id) {
             return (
                 <>
@@ -62,7 +59,7 @@ function MyPosts({id}) {
 
     // **********************************
 
-    // These tree methods carry out same things to comments than those three below to codes
+    // These three methods carry out same things to comments than those three below to codes
     useEffect(() => {
         fetch("/comments")
         .then(response => response.json())
@@ -73,7 +70,6 @@ function MyPosts({id}) {
         e.preventDefault();
         let updatedComment = comments.map((item) => {
             if(item._id===id) {
-                console.log(item);
                 fetch('/comments/editComment', {
                     method: "POST",
                     headers: {
