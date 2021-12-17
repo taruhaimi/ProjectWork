@@ -32,7 +32,7 @@ function AddCodeSnippets() {
         <div>
             <h2> {t("Post your own code")}!</h2>
             <form onSubmit = {submitCode} onChange={handleChange}>
-                <input type="text" id="code" placeholder={t("Enter your code here")}/>
+                <textarea id="code" rows="5" cols="35" placeholder={t("Enter your code here")}></textarea><br></br>
                 <input type="submit" id="submit" value={t("Submit")} />
             </form>
         </div>

@@ -6,7 +6,6 @@ const validateToken = require("../auth/validateToken.js");
 
 /* GET all the comments from the database */
 router.get('/', function(req, res, next) {
-    //Comments.collection.drop();
 
     Comments.find({}, (err,comments) => {
         if(err) return next(err);

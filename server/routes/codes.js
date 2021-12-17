@@ -6,7 +6,6 @@ const validateToken = require("../auth/validateToken.js");
 
 /* GET all the codes from databse */
 router.get('/', function(req, res, next) {
-    //  Codes.collection.drop();
 
     Codes.find({}, (err,code) => {
         if(err) return next(err);

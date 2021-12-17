@@ -3,7 +3,6 @@ var router = express.Router();
 const multer = require("multer")
 const storage = multer.memoryStorage();
 const upload = multer({storage})
-const mongoose = require("mongoose");
 const Users = require("../models/Users");
 const bcrypt = require("bcryptjs");
 const {body, validationResult} = require('express-validator');
@@ -11,7 +10,6 @@ const jwt = require("jsonwebtoken");
 
 /* GET all the users from the database */
 router.get('/', function(req, res, next) {
-  //Users.collection.drop();
 
   Users.find({}, (err,users) => {
     if(err) return next(err);

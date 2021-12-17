@@ -36,7 +36,7 @@ function AddComment({code}) {
     return (
         <div>
             <form onSubmit = {addComment} onChange={handleChange}>
-                <input type="text" id="comment" placeholder={t("Enter your own comment here")}/>
+                <textarea id="comment" rows="3" cols="35" placeholder={t("Enter your own comment here")}></textarea><br></br>
                 <input type="submit" id="commentBtn" value={t("Submit")} />
             </form>
         </div>
