@@ -8,8 +8,8 @@ function Tutorials() {
     const { t } = useTranslation();
 
     return (
-        <div>
-            <h2> {t("Here are the tutorials for usage of this web page")}</h2>
+        <div id="tutorial-page">
+            <h2 id="show-tutorial-title"> {t("Here are the tutorials for usage of this web page")}</h2>
             <h4> {t("Non-registered user can")}</h4>
                 <ul>
                     <li> {t("read other users' code snippets")} </li>

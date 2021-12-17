@@ -38,7 +38,7 @@ function ShowComments({id}) {
                 body: JSON.stringify({"id": id}),
                 mode: "cors"
             }).then((response) => {
-                if (response.status==200) {
+                if (response.status===200) {
                     // Updates the like count on the web page
                     item.like += 1;
                     setComment(commentsCopy);
@@ -64,7 +64,7 @@ function ShowComments({id}) {
                 body: JSON.stringify({"id": id}),
                 mode: "cors"
             }).then((response) => {
-                if (response.status==200) {
+                if (response.status===200) {
                     item.dislike += 1;
                     setComment(commentsCopy);
                 }
@@ -78,9 +78,9 @@ function ShowComments({id}) {
     const commentList = comment.map((item) => {
         if(item.code===id) {
             return ( 
-                <div> 
+                <div id="comment-area"> 
                     <p> <FetchUsername id={item.user} />: <i>{item.comment}</i> </p>
-                    <button id="likeBtn"onClick={() => {addLike(item._id)}} >❤️ {item.like} </button> <button id="dislikeBtn" onClick={() => {disLike(item._id)}} >💔 {item.dislike}</button>
+                    <button id="likeBtn"onClick={() => {addLike(item._id)}} >❤️ {item.like} </button> <button id="dislikeBtn" onClick={() => {disLike(item._id)}} >💔 {item.dislike} </button>
                 </div>
             )
         } else {
@@ -88,7 +88,9 @@ function ShowComments({id}) {
         }
     });
     return (
-        <div>{commentList} </div>
+        <div>
+            {commentList} 
+        </div>
     )
 }
 

@@ -42,7 +42,7 @@ function ShowCodeSnippets() {
                 body: JSON.stringify({"id": id}),
                 mode: "cors"
             }).then((response) => {
-                if (response.status==200) {
+                if (response.status===200) {
                     // Updates the like count on the web page
                     item.like += 1;
                     setCode(codesCopy);
@@ -70,7 +70,7 @@ function ShowCodeSnippets() {
                 body: JSON.stringify({"id": id}),
                 mode: "cors"
             }).then((response) => {
-                if (response.status==200) {
+                if (response.status===200) {
                     // Updates the like count on the web page
                     item.dislike += 1;
                     setCode(codesCopy);
@@ -98,21 +98,20 @@ function ShowCodeSnippets() {
     If user is logged in, they can also post new comments (<AddComment> is called) or vote once*/
     const codeList = code.map((item) => {
         return (
-            <> 
-                <p> <FetchUsername id={item.user}/>: <i>{item.code}</i> </p>
-                <button id="likeBtn" onClick={() => {addLike(item._id)}}>❤️ {item.like} </button> <button id="dislikeBtn" onClick={() => {disLike(item._id)}}>💔 {item.dislike}</button> 
+            <div id="code-area"> 
+                <p > <FetchUsername id={item.user}/>: <i>{item.code}</i> </p>
+                <button id="likeBtn" onClick={() => {addLike(item._id)}}>❤️ {item.like} </button> <button id="dislikeBtn" onClick={() => {disLike(item._id)}}>💔 {item.dislike} </button> 
                 <button onClick={() => showComments(item._id)}>{t("Show comments")}</button>
                 <p> {token ? <AddComment code={item} />: ""} </p> 
                 {item.code_clicked ? <ShowComments id={item._id} /> : ""}
-                <p> *** </p>
-            </>
+            </div>
         )
             
         
     });
 
     return (
-        <div><h2> {t("All Code Snippets")} </h2>
+        <div><h2 id="show-code-title"> {t("All Code Snippets")} </h2>
         {codeList} </div>
     )
 }

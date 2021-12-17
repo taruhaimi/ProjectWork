@@ -44,15 +44,14 @@ function MyPosts({id}) {
     const ownPosts = codes.map((code) => {
         if(code.user===id) {
             return (
-                <>
+                <div id="code-area">
                     <p> <i>{code.code}</i></p>
                     {t("Edit your code snippet")}:
                     <form onSubmit = {(e) => editCode(e,code._id)}>
                         <textarea id="code" rows="5" cols="35" placeholder={t("Write your edits here")}></textarea><br></br>
                         <input type="submit" id="submit" value={t("Submit")} />
                     </form>
-                <p>***</p>
-                </>
+                </div>
             )
         }
     })
@@ -91,24 +90,23 @@ function MyPosts({id}) {
     const ownComments = comments.map((comment) => {
         if(comment.user===id) {
             return (
-                <>
+                <div id="code-area">
                     <p><i>{comment.comment}</i></p>
                     {t("Edit your comment")}:
                 <form onSubmit = {(e) => editComment(e,comment._id)}>
-                        <textarea id="comment" rows="5" cols="35" placeholder={t("Write your edits here")}></textarea><br></br>
+                        <textarea id="code" rows="5" cols="35" placeholder={t("Write your edits here")}></textarea><br></br>
                         <input type="submit" id="submit" value={t("Submit")} />
                 </form>
-                <p> *** </p>
-                </>
+                </div>
             )
         }
     })
     
     return (
         <div>
-            <h3> {t("My posted code snippets")}: </h3>
+            <h3 id="show-code-title"> {t("My posted code snippets")}: </h3>
             {ownPosts}
-            <h3> {t("My posted comments")}: </h3>
+            <h3 id="show-code-title"> {t("My posted comments")}: </h3>
             {ownComments}
         </div>
     )
